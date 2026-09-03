@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="theme-color" content="#000000"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>Spirit Breath — Offline</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#000;--surface:#111;--fg:#f0f3fa;--muted:#8b95ad;--subtle:#5c667d;
+  --inhale:#2dd4bf;--hold:#fbbf24;--exhale:#fb7185;--pause:#38bdf8;--rest:#94a3b8;--guide:#2dd4bf;
+  --rainbow:linear-gradient(135deg,#ff0080,#ff8c00,#ffd700,#00ff88,#00d4ff,#7b2fff,#ff0080);
+}
+html,body{margin:0;min-height:100%;background:#000;color:var(--fg);font-family:system-ui,-apple-system,sans-serif}
+body{padding:0 0 24px;max-width:480px;margin:0 auto}
+.frame{position:fixed;inset:0;pointer-events:none;z-index:50;padding:2px;background:var(--rainbow);background-size:300% 300%;animation:shift 10s ease infinite;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude}
+@keyframes shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes text{to{background-position:200% center}}
+h1,h2{background:linear-gradient(90deg,#ff0080,#ff8c00,#ffd700,#00ff88,#00d4ff,#7b2fff,#ff0080);background-size:200% auto;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:text 10s linear infinite;margin:0}
+header{padding:20px 16px 8px}
+header p{color:var(--muted);font-size:14px;margin:6px 0 0;line-height:1.45}
+.edge{position:relative;border-radius:16px;background:var(--surface);border:none}
+.edge::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;background:var(--rainbow);background-size:300% 300%;animation:shift 8s ease infinite;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.list{padding:8px 16px 24px;display:grid;gap:10px}
+.card{padding:14px 16px;cursor:pointer;transition:transform .15s}
+.card:active{transform:scale(.98)}
+.card h3{font-size:17px;margin:0 0 4px}
+.card p{margin:0;font-size:13px;color:var(--muted)}
+.meta{display:flex;gap:8px;margin-top:8px;font-size:11px;color:var(--subtle)}
+.badge{border:1px solid #2e2e2e;border-radius:999px;padding:2px 8px}
+#session{display:none;padding:12px 16px 32px;min-height:100dvh;flex-direction:column}
+#session.on{display:flex}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.iconbtn{background:#1a1a1a;border:1px solid #2e2e2e;color:var(--fg);border-radius:12px;width:40px;height:40px;font-size:18px;cursor:pointer}
+.progress{height:4px;background:#1a1a1a;border-radius:99px;margin:12px 0 8px;overflow:hidden}
+.progress>i{display:block;height:100%;width:0;background:var(--inhale);border-radius:99px;transition:width .1s linear}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px 0}
+.orb-wrap{position:relative;width:min(280px,78vw);aspect-ratio:1;display:grid;place-items:center}
+.orb{width:58%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;will-change:transform;
+  background:radial-gradient(circle at 35% 30%,#2dd4bf88,#0a0e18);box-shadow:0 0 40px #2dd4bf55}
+.orb .phase{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--inhale)}
+.orb .count{font-size:42px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:4px}
+.instr{max-width:34ch;margin:20px 0 0;font-size:16px;line-height:1.45}
+.stepmeta{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--subtle);margin-top:8px}
+.controls{display:flex;gap:12px;justify-content:center;padding:8px 0 16px}
+.btn{border:0;border-radius:14px;padding:12px 28px;font-size:15px;font-weight:600;cursor:pointer}
+.btn.primary{background:#2dd4bf;color:#042f2e}
+.btn.ghost{background:#1a1a1a;color:var(--fg);border:1px solid #2e2e2e}
+.done{display:none;text-align:center;padding:48px 16px}
+.done.on{display:block}
+.done h2{font-size:28px;margin-bottom:8px}
+.done p{color:var(--muted)}
+.note{font-size:11px;color:var(--subtle);text-align:center;padding:0 16px 8px}
+</style>
+</head>
+<body>
+<div class="frame" aria-hidden="true"></div>
+<div id="home">
+  <header>
+    <h1>Spirit Breath</h1>
+    <p>Offline Spiritual Breathing practice inspired by Dan Brulé. Download once — practice anywhere.</p>
+  </header>
+  <p class="note">Educational only · Breathe gently · Stop if dizzy</p>
+  <div class="list" id="list"></div>
+</div>
+<div id="session">
+  <div class="top">
+    <button class="iconbtn" id="exit" aria-label="Exit">✕</button>
+    <div style="text-align:center;min-width:0;flex:1">
+      <div id="sName" style="font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+      <div id="sStep" style="font-size:11px;color:var(--subtle)"></div>
+    </div>
+    <button class="iconbtn" id="reset" aria-label="Restart">↺</button>
+  </div>
+  <div class="progress"><i id="bar"></i></div>
+  <div class="stage">
+    <div class="orb-wrap">
+      <div class="orb" id="orb">
+        <div>
+          <div class="phase" id="phaseLabel">In</div>
+          <div class="count" id="count">0</div>
+        </div>
+      </div>
+    </div>
+    <p class="instr" id="instr"></p>
+    <div class="stepmeta" id="stepLabel"></div>
+  </div>
+  <div class="controls">
+    <button class="btn ghost" id="pause">Pause</button>
+  </div>
+</div>
+<div class="done" id="done">
+  <h2>Session complete</h2>
+  <p id="doneText">Carry this awareness into your day.</p>
+  <div style="margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <button class="btn primary" id="again">Practice again</button>
+    <button class="btn ghost" id="backHome">Back to library</button>
+  </div>
+</div>
+<script>
+const TECH = [{"id":"awareness","name":"Breath Awareness","tagline":"Witness the breath that is already breathing you","level":"Beginner","steps":[{"phase":"guide","sec":15,"label":"Settle","text":"Find a comfortable position. Soften face and jaw."},{"phase":"rest","sec":40,"label":"Observe","text":"Notice the natural breath. No control — only awareness."},{"phase":"rest","sec":40,"label":"Sensations","text":"Where do you feel the breath most clearly?"},{"phase":"rest","sec":40,"label":"Presence","text":"Rest in pure observation. You are being breathed."},{"phase":"guide","sec":12,"label":"Close","text":"Gently open your eyes. Carry this awareness with you."}]},{"id":"low-slow","name":"Low & Slow","tagline":"Therapeutic zone — about 6 breaths per minute","level":"Beginner","steps":[{"phase":"guide","sec":10,"label":"Prepare","text":"Hand on belly. Soft shoulders. Low and slow."},{"phase":"inhale","sec":5,"label":"Inhale","text":"Nose inhale — belly rises, low and soft."},{"phase":"exhale","sec":5,"label":"Exhale","text":"Slow exhale — shhh. Belly falls."},{"phase":"inhale","sec":5,"label":"Inhale","text":"Nose inhale — belly rises, low and soft."},{"phase":"exhale","sec":5,"label":"Exhale","text":"Slow exhale — shhh. Belly falls."},{"phase":"inhale","sec":5,"label":"Inhale","text":"Nose inhale — belly rises, low and soft."},{"phase":"exhale","sec":5,"label":"Exhale","text":"Slow exhale — shhh. Belly falls."},{"phase":"inhale","sec":5,"label":"Inhale","text":"Nose inhale — belly rises, low and soft."},{"phase":"exhale","sec":5,"label":"Exhale","text":"Slow exhale — shhh. Belly falls."},{"phase":"inhale","sec":5,"label":"Inhale","text":"Nose inhale — belly rises, low and soft."},{"phase":"exhale","sec":5,"label":"Exhale","text":"Slow exhale — shhh. Belly falls."},{"phase":"inhale","sec":5,"label":"Inhale","text":"Nose inhale — belly rises, low and soft."},{"phase":"exhale","sec":5,"label":"Exhale","text":"Slow exhale — shhh. Belly falls."},{"phase":"inhale","sec":5,"label":"Inhale","text":"Nose inhale — belly rises, low and soft."},{"phase":"exhale","sec":5,"label":"Exhale","text":"Slow exhale — shhh. Belly falls."},{"phase":"inhale","sec":5,"label":"Inhale","text":"Nose inhale — belly rises, low and soft."},{"phase":"exhale","sec":5,"label":"Exhale","text":"Slow exhale — shhh. Belly falls."},{"phase":"inhale","sec":5,"label":"Inhale","text":"Nose inhale — belly rises, low and soft."},{"phase":"exhale","sec":5,"label":"Exhale","text":"Slow exhale — shhh. Belly falls."},{"phase":"inhale","sec":5,"label":"Inhale","text":"Nose inhale — belly rises, low and soft."},{"phase":"exhale","sec":5,"label":"Exhale","text":"Slow exhale — shhh. Belly falls."},{"phase":"inhale","sec":5,"label":"Inhale","text":"Nose inhale — belly rises, low and soft."},{"phase":"exhale","sec":5,"label":"Exhale","text":"Slow exhale — shhh. Belly falls."},{"phase":"inhale","sec":5,"label":"Inhale","text":"Nose inhale — belly rises, low and soft."},{"phase":"exhale","sec":5,"label":"Exhale","text":"Slow exhale — shhh. Belly falls."}]},{"id":"box","name":"Box Breathing","tagline":"Four equal sides for calm control","level":"Beginner","steps":[{"phase":"guide","sec":8,"label":"Prepare","text":"Four equal sides. Soft throat on holds."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Fill evenly."},{"phase":"hold","sec":4,"label":"Hold full","text":"Soft hold. Stay open."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Empty evenly."},{"phase":"pause","sec":4,"label":"Hold empty","text":"Soft empty hold."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Fill evenly."},{"phase":"hold","sec":4,"label":"Hold full","text":"Soft hold. Stay open."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Empty evenly."},{"phase":"pause","sec":4,"label":"Hold empty","text":"Soft empty hold."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Fill evenly."},{"phase":"hold","sec":4,"label":"Hold full","text":"Soft hold. Stay open."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Empty evenly."},{"phase":"pause","sec":4,"label":"Hold empty","text":"Soft empty hold."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Fill evenly."},{"phase":"hold","sec":4,"label":"Hold full","text":"Soft hold. Stay open."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Empty evenly."},{"phase":"pause","sec":4,"label":"Hold empty","text":"Soft empty hold."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Fill evenly."},{"phase":"hold","sec":4,"label":"Hold full","text":"Soft hold. Stay open."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Empty evenly."},{"phase":"pause","sec":4,"label":"Hold empty","text":"Soft empty hold."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Fill evenly."},{"phase":"hold","sec":4,"label":"Hold full","text":"Soft hold. Stay open."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Empty evenly."},{"phase":"pause","sec":4,"label":"Hold empty","text":"Soft empty hold."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Fill evenly."},{"phase":"hold","sec":4,"label":"Hold full","text":"Soft hold. Stay open."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Empty evenly."},{"phase":"pause","sec":4,"label":"Hold empty","text":"Soft empty hold."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Fill evenly."},{"phase":"hold","sec":4,"label":"Hold full","text":"Soft hold. Stay open."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Empty evenly."},{"phase":"pause","sec":4,"label":"Hold empty","text":"Soft empty hold."}]},{"id":"triangle","name":"Triangle Breath","tagline":"Inhale · Exhale · Pause","level":"Beginner","steps":[{"phase":"guide","sec":8,"label":"Prepare","text":"Equal sides: inhale, exhale, pause."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Even inhale — side one."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Even exhale — side two."},{"phase":"pause","sec":4,"label":"Pause","text":"Empty pause — side three."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Even inhale — side one."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Even exhale — side two."},{"phase":"pause","sec":4,"label":"Pause","text":"Empty pause — side three."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Even inhale — side one."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Even exhale — side two."},{"phase":"pause","sec":4,"label":"Pause","text":"Empty pause — side three."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Even inhale — side one."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Even exhale — side two."},{"phase":"pause","sec":4,"label":"Pause","text":"Empty pause — side three."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Even inhale — side one."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Even exhale — side two."},{"phase":"pause","sec":4,"label":"Pause","text":"Empty pause — side three."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Even inhale — side one."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Even exhale — side two."},{"phase":"pause","sec":4,"label":"Pause","text":"Empty pause — side three."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Even inhale — side one."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Even exhale — side two."},{"phase":"pause","sec":4,"label":"Pause","text":"Empty pause — side three."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Even inhale — side one."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Even exhale — side two."},{"phase":"pause","sec":4,"label":"Pause","text":"Empty pause — side three."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Even inhale — side one."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Even exhale — side two."},{"phase":"pause","sec":4,"label":"Pause","text":"Empty pause — side three."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Even inhale — side one."},{"phase":"exhale","sec":4,"label":"Exhale","text":"Even exhale — side two."},{"phase":"pause","sec":4,"label":"Pause","text":"Empty pause — side three."}]},{"id":"exhale","name":"Exhale Comfort Zone","tagline":"Lengthen the out-breath and rest after","level":"Beginner","steps":[{"phase":"guide","sec":10,"label":"Prepare","text":"Lean into the exhale. Comfort is the goal."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Soft nasal inhale."},{"phase":"exhale","sec":6,"label":"Exhale","text":"Lengthen the out-breath."},{"phase":"pause","sec":4,"label":"Rest","text":"Linger in the quiet comfort zone."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Soft nasal inhale."},{"phase":"exhale","sec":6,"label":"Exhale","text":"Lengthen the out-breath."},{"phase":"pause","sec":4,"label":"Rest","text":"Linger in the quiet comfort zone."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Soft nasal inhale."},{"phase":"exhale","sec":6,"label":"Exhale","text":"Lengthen the out-breath."},{"phase":"pause","sec":4,"label":"Rest","text":"Linger in the quiet comfort zone."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Soft nasal inhale."},{"phase":"exhale","sec":6,"label":"Exhale","text":"Lengthen the out-breath."},{"phase":"pause","sec":4,"label":"Rest","text":"Linger in the quiet comfort zone."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Soft nasal inhale."},{"phase":"exhale","sec":6,"label":"Exhale","text":"Lengthen the out-breath."},{"phase":"pause","sec":4,"label":"Rest","text":"Linger in the quiet comfort zone."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Soft nasal inhale."},{"phase":"exhale","sec":6,"label":"Exhale","text":"Lengthen the out-breath."},{"phase":"pause","sec":4,"label":"Rest","text":"Linger in the quiet comfort zone."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Soft nasal inhale."},{"phase":"exhale","sec":6,"label":"Exhale","text":"Lengthen the out-breath."},{"phase":"pause","sec":4,"label":"Rest","text":"Linger in the quiet comfort zone."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Soft nasal inhale."},{"phase":"exhale","sec":6,"label":"Exhale","text":"Lengthen the out-breath."},{"phase":"pause","sec":4,"label":"Rest","text":"Linger in the quiet comfort zone."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Soft nasal inhale."},{"phase":"exhale","sec":6,"label":"Exhale","text":"Lengthen the out-breath."},{"phase":"pause","sec":4,"label":"Rest","text":"Linger in the quiet comfort zone."},{"phase":"inhale","sec":4,"label":"Inhale","text":"Soft nasal inhale."},{"phase":"exhale","sec":6,"label":"Exhale","text":"Lengthen the out-breath."},{"phase":"pause","sec":4,"label":"Rest","text":"Linger in the quiet comfort zone."}]},{"id":"circular","name":"Circular Breathing","tagline":"Connected breath — no pause","level":"Intermediate","steps":[{"phase":"guide","sec":12,"label":"Prepare","text":"Active inhale, passive exhale. Continuous wave. Soft body."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale with intention."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Let go — no pause."}]},{"id":"heart","name":"Heart-Centered Breath","tagline":"Breathe into the heart","level":"Beginner","steps":[{"phase":"guide","sec":10,"label":"Prepare","text":"Hand on heart. Breathe as if the heart is home."},{"phase":"inhale","sec":5,"label":"Into Heart","text":"Breathe into the heart space."},{"phase":"hold","sec":2,"label":"Feel","text":"Warmth, love, acceptance."},{"phase":"exhale","sec":6,"label":"Radiate","text":"Exhale kindness outward."},{"phase":"inhale","sec":5,"label":"Into Heart","text":"Breathe into the heart space."},{"phase":"hold","sec":2,"label":"Feel","text":"Warmth, love, acceptance."},{"phase":"exhale","sec":6,"label":"Radiate","text":"Exhale kindness outward."},{"phase":"inhale","sec":5,"label":"Into Heart","text":"Breathe into the heart space."},{"phase":"hold","sec":2,"label":"Feel","text":"Warmth, love, acceptance."},{"phase":"exhale","sec":6,"label":"Radiate","text":"Exhale kindness outward."},{"phase":"inhale","sec":5,"label":"Into Heart","text":"Breathe into the heart space."},{"phase":"hold","sec":2,"label":"Feel","text":"Warmth, love, acceptance."},{"phase":"exhale","sec":6,"label":"Radiate","text":"Exhale kindness outward."},{"phase":"inhale","sec":5,"label":"Into Heart","text":"Breathe into the heart space."},{"phase":"hold","sec":2,"label":"Feel","text":"Warmth, love, acceptance."},{"phase":"exhale","sec":6,"label":"Radiate","text":"Exhale kindness outward."},{"phase":"inhale","sec":5,"label":"Into Heart","text":"Breathe into the heart space."},{"phase":"hold","sec":2,"label":"Feel","text":"Warmth, love, acceptance."},{"phase":"exhale","sec":6,"label":"Radiate","text":"Exhale kindness outward."},{"phase":"inhale","sec":5,"label":"Into Heart","text":"Breathe into the heart space."},{"phase":"hold","sec":2,"label":"Feel","text":"Warmth, love, acceptance."},{"phase":"exhale","sec":6,"label":"Radiate","text":"Exhale kindness outward."},{"phase":"inhale","sec":5,"label":"Into Heart","text":"Breathe into the heart space."},{"phase":"hold","sec":2,"label":"Feel","text":"Warmth, love, acceptance."},{"phase":"exhale","sec":6,"label":"Radiate","text":"Exhale kindness outward."},{"phase":"inhale","sec":5,"label":"Into Heart","text":"Breathe into the heart space."},{"phase":"hold","sec":2,"label":"Feel","text":"Warmth, love, acceptance."},{"phase":"exhale","sec":6,"label":"Radiate","text":"Exhale kindness outward."},{"phase":"inhale","sec":5,"label":"Into Heart","text":"Breathe into the heart space."},{"phase":"hold","sec":2,"label":"Feel","text":"Warmth, love, acceptance."},{"phase":"exhale","sec":6,"label":"Radiate","text":"Exhale kindness outward."}]},{"id":"spiritual","name":"Spiritual Breathing","tagline":"Awareness + conscious breathing","level":"Advanced","steps":[{"phase":"guide","sec":12,"label":"Arrive","text":"Sit tall. Soften. The breath is already here."},{"phase":"rest","sec":35,"label":"Awareness","text":"Watch the natural breath. Being, not doing."},{"phase":"inhale","sec":5,"label":"Low In","text":"Low & slow. Belly rises."},{"phase":"exhale","sec":5,"label":"Slow Out","text":"Lengthen the exhale."},{"phase":"inhale","sec":5,"label":"Low In","text":"Low & slow. Belly rises."},{"phase":"exhale","sec":5,"label":"Slow Out","text":"Lengthen the exhale."},{"phase":"inhale","sec":5,"label":"Low In","text":"Low & slow. Belly rises."},{"phase":"exhale","sec":5,"label":"Slow Out","text":"Lengthen the exhale."},{"phase":"inhale","sec":5,"label":"Low In","text":"Low & slow. Belly rises."},{"phase":"exhale","sec":5,"label":"Slow Out","text":"Lengthen the exhale."},{"phase":"guide","sec":8,"label":"Open","text":"Circular connected breath. Continuous wave."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale. No pause."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Passive exhale. Connected."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale. No pause."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Passive exhale. Connected."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale. No pause."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Passive exhale. Connected."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale. No pause."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Passive exhale. Connected."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale. No pause."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Passive exhale. Connected."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale. No pause."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Passive exhale. Connected."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale. No pause."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Passive exhale. Connected."},{"phase":"inhale","sec":3,"label":"Active In","text":"Active inhale. No pause."},{"phase":"exhale","sec":3,"label":"Passive Out","text":"Passive exhale. Connected."},{"phase":"guide","sec":8,"label":"Heart","text":"Bring the breath to the heart."},{"phase":"inhale","sec":5,"label":"Heart In","text":"Breathe into the heart center."},{"phase":"exhale","sec":6,"label":"Heart Out","text":"Exhale warmth and gratitude."},{"phase":"inhale","sec":5,"label":"Heart In","text":"Love, acceptance, presence."},{"phase":"exhale","sec":6,"label":"Heart Out","text":"Radiate peace."},{"phase":"rest","sec":40,"label":"Silence","text":"Rest. Let the breath be natural. Simply be."},{"phase":"guide","sec":12,"label":"Close","text":"Thank the breath. Open eyes when ready."}]}];
+const COLORS = {inhale:"#2dd4bf",hold:"#fbbf24",exhale:"#fb7185",pause:"#38bdf8",rest:"#94a3b8",guide:"#2dd4bf"};
+const SCALES = {inhale:[0.72,1],hold:[1,1],exhale:[1,0.72],pause:[0.72,0.72],rest:[0.82,0.88],guide:[0.85,0.9]};
+
+const list = document.getElementById("list");
+TECH.forEach(t => {
+  const sec = t.steps.reduce((a,s)=>a+s.sec,0);
+  const el = document.createElement("button");
+  el.type = "button";
+  el.className = "edge card";
+  el.innerHTML = "<h3>"+t.name+"</h3><p>"+t.tagline+"</p><div class='meta'><span class='badge'>"+Math.round(sec/60)+" min</span><span class='badge'>"+t.level+"</span></div>";
+  el.onclick = () => start(t);
+  list.appendChild(el);
+});
+
+let tech=null, idx=0, elapsed=0, totalElapsed=0, running=false, raf=null, last=null;
+
+function totalSec(t){return t.steps.reduce((a,s)=>a+s.sec,0)}
+
+function start(t){
+  tech=t; idx=0; elapsed=0; totalElapsed=0; running=true; last=null;
+  document.getElementById("home").style.display="none";
+  document.getElementById("done").classList.remove("on");
+  document.getElementById("session").classList.add("on");
+  document.getElementById("sName").textContent=t.name;
+  document.getElementById("pause").textContent="Pause";
+  tickStart();
+}
+
+function finish(){
+  running=false;
+  if(raf) cancelAnimationFrame(raf);
+  document.getElementById("session").classList.remove("on");
+  document.getElementById("done").classList.add("on");
+  document.getElementById("doneText").textContent="You finished "+tech.name+". Carry this awareness into your day.";
+}
+
+function paint(){
+  const step=tech.steps[idx];
+  const color=COLORS[step.phase]||"#2dd4bf";
+  const p=Math.min(1, elapsed/step.sec);
+  const [a,b]=SCALES[step.phase]||[0.85,0.9];
+  const scale=a+(b-a)*p;
+  const orb=document.getElementById("orb");
+  orb.style.transform="scale("+scale+")";
+  orb.style.background="radial-gradient(circle at 35% 30%, "+color+"99, #0a0e18)";
+  orb.style.boxShadow="0 0 40px "+color+"66";
+  document.getElementById("phaseLabel").style.color=color;
+  document.getElementById("phaseLabel").textContent=step.label;
+  document.getElementById("count").textContent=String(Math.max(0, Math.ceil(step.sec-elapsed)));
+  document.getElementById("instr").textContent=step.text;
+  document.getElementById("stepLabel").textContent=step.label;
+  document.getElementById("sStep").textContent="Step "+(idx+1)+" of "+tech.steps.length;
+  const tot=totalSec(tech);
+  document.getElementById("bar").style.width=((totalElapsed/tot)*100)+"%";
+  document.getElementById("bar").style.background=color;
+}
+
+function loop(ts){
+  if(!running) return;
+  if(last==null) last=ts;
+  const dt=Math.min(0.1,(ts-last)/1000);
+  last=ts;
+  elapsed+=dt; totalElapsed+=dt;
+  const step=tech.steps[idx];
+  if(elapsed>=step.sec){
+    elapsed-=step.sec;
+    if(idx+1>=tech.steps.length){ paint(); finish(); return; }
+    idx++;
+  }
+  paint();
+  raf=requestAnimationFrame(loop);
+}
+function tickStart(){ paint(); last=null; raf=requestAnimationFrame(loop); }
+
+document.getElementById("pause").onclick=()=>{
+  running=!running;
+  document.getElementById("pause").textContent=running?"Pause":"Resume";
+  if(running){ last=null; raf=requestAnimationFrame(loop); }
+  else if(raf) cancelAnimationFrame(raf);
+};
+document.getElementById("exit").onclick=()=>{
+  running=false; if(raf) cancelAnimationFrame(raf);
+  document.getElementById("session").classList.remove("on");
+  document.getElementById("home").style.display="block";
+};
+document.getElementById("reset").onclick=()=>{ if(tech) start(tech); };
+document.getElementById("again").onclick=()=>{ if(tech) start(tech); };
+document.getElementById("backHome").onclick=()=>{
+  document.getElementById("done").classList.remove("on");
+  document.getElementById("home").style.display="block";
+};
+</script>
+</body>
+</html>

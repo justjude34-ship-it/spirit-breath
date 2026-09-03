@@ -1,0 +1,438 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+  /* Pure black theme */
+  --color-bg: #000000;
+  --color-bg-elevated: #000000;
+  --color-surface: #050505;
+  --color-surface-2: #0d0d0d;
+  --color-fg: #ffffff;
+  --color-muted: #a1a1aa;
+  --color-subtle: #63636b;
+  --color-border: #1c1c1c;
+  --color-border-strong: #2e2e2e;
+
+  --color-primary: #5eead4;
+  --color-primary-fg: #042f2e;
+  --color-primary-soft: #2dd4bf33;
+
+  --color-accent: #fb923c;
+  --color-accent-fg: #1c0a00;
+  --color-accent-soft: #fb923c33;
+
+  --color-rose: #fb7185;
+  --color-sky: #38bdf8;
+  --color-gold: #fbbf24;
+  --color-violet-soft: #a78bfa;
+
+  --color-inhale: #2dd4bf;
+  --color-hold: #fbbf24;
+  --color-exhale: #fb7185;
+  --color-pause: #38bdf8;
+  --color-rest: #94a3b8;
+
+  --color-success: #34d399;
+  --color-danger: #f87171;
+
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-sans: "Outfit", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-full: 9999px;
+
+  --shadow-glow-teal: 0 0 40px #2dd4bf40;
+  --shadow-glow-rose: 0 0 40px #fb718540;
+  --shadow-card: 0 8px 32px #000000aa;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color-scheme: dark;
+    background: #000000;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background: #000000 !important;
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  /* Rainbow gradient headings on black */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    background-image: linear-gradient(
+      100deg,
+      #ff2d95 0%,
+      #ff8a00 18%,
+      #ffd400 36%,
+      #00e676 54%,
+      #00c2ff 72%,
+      #b14dff 90%,
+      #ff2d95 100%
+    );
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: gradient-flow 9s linear infinite;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-primary) 40%, transparent);
+    color: var(--color-fg);
+  }
+}
+
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Shared vivid rainbow gradient */
+.rainbow-grad {
+  background-image: linear-gradient(
+    120deg,
+    #ff2d95,
+    #ff8a00,
+    #ffd400,
+    #00e676,
+    #00c2ff,
+    #b14dff,
+    #ff2d95
+  );
+  background-size: 300% 300%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Thick gradient edges on black cards */
+.gradient-edge,
+.rainbow-edge {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent !important;
+  background-color: #000000;
+}
+
+.gradient-edge::before,
+.rainbow-edge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2.5px;
+  background: linear-gradient(
+    135deg,
+    #ff2d95,
+    #ff8a00,
+    #ffd400,
+    #00e676,
+    #00c2ff,
+    #b14dff,
+    #ff2d95
+  );
+  background-size: 300% 300%;
+  animation: gradient-shift 8s ease infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none !important;
+  z-index: 0;
+}
+
+/* Pure black shell + soft color glows */
+.app-shell {
+  position: relative;
+  min-height: calc(100dvh - var(--grok-banner-h, 0px));
+  background:
+    radial-gradient(ellipse 100% 50% at 50% -10%, #ff2d9518, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 100% 20%, #00c2ff14, transparent 50%),
+    radial-gradient(ellipse 50% 35% at 0% 80%, #00e67612, transparent 50%),
+    radial-gradient(ellipse 45% 30% at 90% 100%, #b14dff12, transparent 45%),
+    #000000;
+}
+
+/* Thick fixed gradient frame */
+.app-frame {
+  pointer-events: none !important;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  padding: 4px;
+  background: linear-gradient(
+    135deg,
+    #ff2d95,
+    #ff8a00,
+    #ffd400,
+    #00e676,
+    #00c2ff,
+    #b14dff,
+    #ff2d95
+  );
+  background-size: 300% 300%;
+  animation: gradient-shift 10s ease infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Sticky download strip — dark black with rainbow bottom edge */
+.download-strip {
+  background: #000000ee;
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(
+      90deg,
+      #ff2d95,
+      #ff8a00,
+      #ffd400,
+      #00e676,
+      #00c2ff,
+      #b14dff
+    )
+    1;
+  backdrop-filter: blur(12px);
+}
+
+/* SOLID rainbow download button — impossible to miss on black */
+.download-btn-solid {
+  position: relative;
+  border: none;
+  color: #0a0a0a !important;
+  background-image: linear-gradient(
+    105deg,
+    #ff2d95,
+    #ff8a00,
+    #ffd400,
+    #00e676,
+    #00c2ff,
+    #b14dff
+  );
+  background-size: 200% auto;
+  animation: gradient-flow 5s linear infinite;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+    0 4px 20px #ff2d9544,
+    0 2px 10px #00c2ff33;
+}
+
+.download-btn-solid:hover {
+  filter: brightness(1.08) saturate(1.1);
+}
+
+.download-btn-solid:disabled {
+  cursor: wait;
+}
+
+/* Bottom nav rainbow top edge */
+.nav-gradient {
+  position: relative;
+  border-top: none !important;
+}
+
+.nav-gradient::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    #ff2d95,
+    #ff8a00,
+    #ffd400,
+    #00e676,
+    #00c2ff,
+    #b14dff,
+    #ff2d95
+  );
+  background-size: 200% 100%;
+  animation: gradient-shift 7s linear infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Cards sit on pure black */
+.bg-surface {
+  background-color: #050505 !important;
+}
+.bg-surface-2 {
+  background-color: #0d0d0d !important;
+}
+.bg-bg-elevated {
+  background-color: #000000 !important;
+}
+
+/* Breath orb phases */
+@keyframes orb-breathe {
+  from {
+    transform: scale(var(--orb-from, 0.72));
+  }
+  to {
+    transform: scale(var(--orb-to, 1));
+  }
+}
+
+@keyframes ring-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-float {
+  animation: float-soft 5s ease-in-out infinite;
+}
+
+.orb-ring {
+  animation: ring-pulse 3.2s ease-in-out infinite;
+}
+
+.phase-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--phase-color, var(--color-primary)) 25%, transparent),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-float,
+  .orb-ring,
+  .phase-shimmer,
+  .orb-core,
+  .rainbow-edge::before,
+  .gradient-edge::before,
+  .app-frame,
+  .nav-gradient::before,
+  .download-btn-solid,
+  h1,
+  h2,
+  h3,
+  h4 {
+    animation: none !important;
+  }
+}
+
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 999px;
+}
+
+.pb-nav {
+  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+}
