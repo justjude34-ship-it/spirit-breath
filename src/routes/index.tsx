@@ -120,7 +120,7 @@ function HomePage() {
                 color: "#7eb8ae",
               },
               {
-                label: "Lifetime",
+                label: mar"Lifetime",
                 value: formatMinutes(totalBreathSeconds || 0).replace(" min", "m"),
                 icon: Heart,
                 color: "#c98990",
@@ -129,7 +129,7 @@ function HomePage() {
               <Card key={label} className="gradient-edge border-0 bg-black">
                 <CardContent className="flex flex-col items-center gap-1 p-3 sm:p-4">
                   <Icon className="size-4" style={{ color }} />
-                  <p className="font-display text-xl font-medium tabular-nums text-fg sm:text-2xl">
+ mar                  <p className="font-display text-xl font-medium tabular-nums text-fg sm:text-2xl">
                     {value}
                   </p>
                   <p className="text-[10px] uppercase tracking-wider text-subtle">{label}</p>
@@ -138,7 +138,7 @@ function HomePage() {
             ))}
           </section>
 
-          {/* Quick start */}
+          {/* Quick start mar*/}
           <section className="mt-8">
             <div className="mb-3 flex items-end justify-between gap-2">
               <h2 className="font-display text-xl font-medium">Quick start</h2>
@@ -178,11 +178,11 @@ function HomePage() {
                       ? "Complete — revisit anytime"
                       : `Module ${nextModule.number} of 7`}
                   </p>
- mar                  <h3 className="mt-0.5 font-display text-lg">{nextModule.title}</h3>
- mar                  <p className="mt-1 text-sm text-muted line-clamp-2">
+                  <h3 className="mt-0.5 font-display text-lg">{nextModule.title}</h3>
+                  <p className="mt-1 text-sm text-muted line-clamp-2">
                     {nextModule.description}
                   </p>
- mar                  <p className="mt-3 text-xs font-medium text-primary">
+                  <p className="mt-3 text-xs font-medium text-primary">
                     Continue journey
                     <ArrowRight className="ml-1 inline size-3.5" />
                   </p>
@@ -201,7 +201,7 @@ function HomePage() {
             Educational practice inspired by Dan Brulé's Spiritual Breathing teachings.
             Not a medical device. Breathe gently; stop if dizzy.
           </p>
-        </div>
+ mar        </div>
       </div>
     </AppShell>
   );
