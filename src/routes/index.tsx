@@ -41,17 +41,13 @@ function HomePage() {
       <div className="mx-auto w-full max-w-2xl">
         {/* Cinematic cover */}
         <section className="relative overflow-hidden">
-          <div className="relative h-[min(78vh,720px)] w-full bg-black">
+          <div className="relative h-[min(72vh,680px)] w-full bg-black">
             <picture>
               <source media="(min-width: 640px)" srcSet="/covers/hero-wide.jpg" />
               <img
                 src="/covers/hero-portrait.jpg"
                 alt="Spiritual Breathing — luminous breath on black"
-                className="absolute inset-0 size-full object-cover object-[center_18%] sm:object-[center_30%]"
-                style={{
-                  filter:
-                    "saturate(0.42) sepia(0.18) brightness(0.92) contrast(1.04)",
-                }}
+                className="absolute inset-0 size-full object-cover object-[center_22%] sm:object-[center_28%]"
                 fetchPriority="high"
               />
             </picture>
@@ -59,7 +55,7 @@ function HomePage() {
               className="pointer-events-none absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 38%, rgba(0,0,0,0.55) 72%, #000 100%)",
+                  "linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.02) 36%, rgba(0,0,0,0.45) 70%, #000 100%)",
               }}
               aria-hidden
             />
@@ -116,18 +112,18 @@ function HomePage() {
           {/* Stats strip */}
           <section className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
             {[
-              { label: "Streak", value: `${streak}d`, icon: Flame, color: "#fb923c" },
+              { label: "Streak", value: `${streak}d`, icon: Flame, color: "#d4b483" },
               {
                 label: "Today",
                 value: String(sessionsToday),
                 icon: Sparkles,
-                color: "#5eead4",
+                color: "#7eb8ae",
               },
               {
                 label: "Lifetime",
                 value: formatMinutes(totalBreathSeconds || 0).replace(" min", "m"),
                 icon: Heart,
-                color: "#fb7185",
+                color: "#c98990",
               },
             ].map(({ label, value, icon: Icon, color }) => (
               <Card key={label} className="gradient-edge border-0 bg-black">
@@ -182,11 +178,11 @@ function HomePage() {
                       ? "Complete — revisit anytime"
                       : `Module ${nextModule.number} of 7`}
                   </p>
-                  <h3 className="mt-0.5 font-display text-lg">{nextModule.title}</h3>
-                  <p className="mt-1 text-sm text-muted line-clamp-2">
+ mar                  <h3 className="mt-0.5 font-display text-lg">{nextModule.title}</h3>
+ mar                  <p className="mt-1 text-sm text-muted line-clamp-2">
                     {nextModule.description}
                   </p>
-                  <p className="mt-3 text-xs font-medium text-primary">
+ mar                  <p className="mt-3 text-xs font-medium text-primary">
                     Continue journey
                     <ArrowRight className="ml-1 inline size-3.5" />
                   </p>
