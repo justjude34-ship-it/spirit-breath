@@ -46,6 +46,7 @@ export const Route = createRootRoute({
       { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "icon", href: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
       { rel: "apple-touch-icon", href: "/icons/icon-512.png" },
+      { rel: "preload", as: "image", href: "/covers/app-cover.jpg" },
     ],
   }),
   component: RootDocument,
