@@ -40,8 +40,8 @@ function HomePage() {
               <source media="(min-width: 640px)" srcSet="/covers/hero-wide.jpg" />
               <img
                 src="/covers/hero-portrait.jpg"
-                alt="Spiritual Breathing — luminous breath on black"
-                className="absolute inset-0 size-full object-cover object-[center_22%] sm:object-[center_28%]"
+                alt="Modern harbour at dusk — still water, city lights, quiet sky"
+                className="absolute inset-0 size-full object-cover object-[center_42%] sm:object-center"
                 fetchPriority="high"
               />
             </picture>
@@ -80,7 +80,7 @@ function HomePage() {
               <Card key={label} className="gradient-edge border-0 bg-black">
                 <CardContent className="flex flex-col items-center gap-1 p-3 sm:p-4">
                   <Icon className="size-4" style={{ color }} />
- mar                  <p className="font-display text-xl font-medium tabular-nums text-fg sm:text-2xl">{value}</p>
+                  <p className="font-display text-xl font-medium tabular-nums text-fg sm:text-2xl">{value}</p>
                   <p className="text-[10px] uppercase tracking-wider text-subtle">{label}</p>
                 </CardContent>
               </Card>
@@ -88,7 +88,7 @@ function HomePage() {
           </section>
           <section className="mt-8">
             <div className="mb-3 flex items-end justify-between gap-2">
-              <h2 className="font-display text-xl font-medium mar">Quick start</h2>
+              <h2 className="font-display text-xl font-medium">Quick start</h2>
               <Link to="/practice" className="text-xs font-medium text-primary hover:underline">See all</Link>
             </div>
             <div className="flex flex-wrap gap-2">
