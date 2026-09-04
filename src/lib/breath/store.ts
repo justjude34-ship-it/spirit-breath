@@ -19,11 +19,13 @@ type BreathState = {
   lastPracticeDate: string | null;
   soundEnabled: boolean;
   hapticsEnabled: boolean;
+  skipIntro: boolean;
   addSession: (session: Omit<SessionRecord, "id" | "completedAt">) => void;
   toggleFavorite: (techniqueId: string) => void;
   completeModule: (moduleId: string) => void;
   setSoundEnabled: (v: boolean) => void;
   setHapticsEnabled: (v: boolean) => void;
+  setSkipIntro: (v: boolean) => void;
   sessionsToday: () => number;
   minutesThisWeek: () => number;
 };
@@ -54,6 +56,7 @@ export const useBreathStore = create<BreathState>()(
       lastPracticeDate: null,
       soundEnabled: true,
       hapticsEnabled: true,
+      skipIntro: false,
 
       addSession: (session) => {
         const now = todayKey();
@@ -87,6 +90,7 @@ export const useBreathStore = create<BreathState>()(
 
       setSoundEnabled: (v) => set({ soundEnabled: v }),
       setHapticsEnabled: (v) => set({ hapticsEnabled: v }),
+      setSkipIntro: (v) => set({ skipIntro: v }),
 
       sessionsToday: () => {
         const key = todayKey();
