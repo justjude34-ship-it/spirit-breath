@@ -1,11 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  ArrowRight,
-  Flame,
-  Heart,
-  Sparkles,
-  Wind,
-} from "lucide-react";
+import { ArrowRight, Flame, Heart, Sparkles, Wind } from "lucide-react";
 import { AppShell } from "@/components/breath/app-shell";
 import { MiniTechniqueChip, TechniqueCard } from "@/components/breath/technique-card";
 import { DownloadButton } from "@/components/pwa/download-button";
@@ -25,7 +19,6 @@ function HomePage() {
   const totalBreathSeconds = useBreathStore((s) => s.totalBreathSeconds);
   const sessionsToday = useBreathStore((s) => s.sessionsToday());
   const completedModules = useBreathStore((s) => s.completedModules);
-
   const featured = techniques.find((t) => t.id === "spiritual-breathing")!;
   const quick = [
     techniques.find((t) => t.id === "low-and-slow")!,
@@ -54,7 +47,7 @@ function HomePage() {
               className="pointer-events-none absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.02) 36%, rgba(0,0,0,0.45) 70%, #000 100%)",
+ mar                  "linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.02) 36%, rgba(0,0,0,0.45) 70%, #000 100%)",
               }}
               aria-hidden
             />
@@ -67,13 +60,10 @@ function HomePage() {
               </h1>
               <p className="mt-2 max-w-md text-sm text-white/75 sm:text-base">
                 Breathe yourself awake — awareness, energy, heart, and presence.
- mar              </p>
+              </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Button asChild size="lg">
-                  <Link
-                    to="/practice/$techniqueId"
-                    params={{ techniqueId: "spiritual-breathing" }}
-                  >
+                  <Link to="/practice/$techniqueId" params={{ techniqueId: "spiritual-breathing" }}>
                     <Wind className="size-5" />
                     Start guided session
                   </Link>
@@ -90,14 +80,10 @@ function HomePage() {
         </section>
 
         <div className="px-4 sm:px-6">
-          <section className="gradient-edge mt-4 mb-4 overflow-hidden rounded-3xl bg-black p-5 sm:p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-              Free offline app
-            </p>
+ mar          <section className="gradient-edge mt-4 mb-4 overflow-hidden rounded-3xl bg-black p-5 sm:p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Free offline app</p>
             <h2 className="mt-1 font-display text-2xl font-medium">Download Spirit Breath</h2>
-            <p className="mt-1.5 text-sm text-muted">
-              One tap saves a full offline copy you can open anytime — no install required.
-            </p>
+            <p className="mt-1.5 text-sm text-muted">One tap saves a full offline copy you can open anytime — no install required.</p>
             <DownloadButton size="xl" label="Download app now" className="mt-4 w-full" />
           </section>
 
@@ -107,12 +93,7 @@ function HomePage() {
             {[
               { label: "Streak", value: `${streak}d`, icon: Flame, color: "#d4b483" },
               { label: "Today", value: String(sessionsToday), icon: Sparkles, color: "#7eb8ae" },
-              {
-                label: "Lifetime",
-                value: formatMinutes(totalBreathSeconds || 0).replace(" min", "m"),
-                icon: Heart,
-                color: "#c98990",
-              },
+              { label: "Lifetime", value: formatMinutes(totalBreathSeconds || 0).replace(" min", "m"), icon: Heart, color: "#c98990" },
             ].map(({ label, value, icon: Icon, color }) => (
               <Card key={label} className="gradient-edge border-0 bg-black">
                 <CardContent className="flex flex-col items-center gap-1 p-3 sm:p-4">
@@ -136,29 +117,18 @@ function HomePage() {
             </div>
           </section>
 
-          <section className="mt-8"> mar
+          <section className="mt-8">
             <h2 className="mb-3 font-display text-xl font-medium">7 Essentials journey</h2>
             <Link to="/journey" className="gradient-edge block overflow-hidden rounded-2xl border border-transparent bg-black p-5 transition-opacity hover:opacity-95">
               <div className="flex items-start gap-4">
-                <div
-                  className="flex size-12 shrink-0 items-center justify-center rounded-xl font-display text-lg font-medium"
-                  style={{
-                    background: `color-mix(in oklab, ${nextModule.color} 22%, transparent)`,
-                    color: nextModule.color,
-                  }}
-                >
- mar                  {nextModule.number}
+                <div className="flex size-12 shrink-0 items-center justify-center rounded-xl font-display text-lg font-medium" style={{ background: `color-mix(in oklab, ${nextModule.color} 22%, transparent)`, color: nextModule.color }}>
+                  {nextModule.number}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs uppercase tracking-widest text-subtle">
-                    {completedModules.length >= 7 ? "Complete — revisit anytime" : `Module ${nextModule.number} of 7`}
-                  </p>
+                  <p className="text-xs uppercase tracking-widest text-subtle">{completedModules.length >= 7 ? "Complete — revisit anytime" : `Module ${nextModule.number} of 7`}</p>
                   <h3 className="mt-0.5 font-display text-lg">{nextModule.title}</h3>
                   <p className="mt-1 text-sm text-muted line-clamp-2">{nextModule.description}</p>
-                  <p className="mt-3 text-xs font-medium text-primary">
-                    Continue journey
-                    <ArrowRight className="ml-1 inline size-3.5" />
-                  </p>
+                  <p className="mt-3 text-xs font-medium text-primary">Continue journey <ArrowRight className="ml-1 inline size-3.5" /></p>
                 </div>
               </div>
             </Link>
@@ -169,10 +139,7 @@ function HomePage() {
             <TechniqueCard technique={featured} featured />
           </section>
 
-          <p className="mb-6 text-center text-[11px] leading-relaxed text-subtle">
-            Educational practice inspired by Dan Brulé's Spiritual Breathing teachings.
-            Not a medical device. Breathe gently; stop if dizzy.
-          </p>
+          <p className="mb-6 text-center text-[11px] leading-relaxed text-subtle">Educational practice inspired by Dan Brulé's Spiritual Breathing teachings. Not a medical device. Breathe gently; stop if dizzy.</p>
         </div>
       </div>
     </AppShell>
