@@ -41,7 +41,7 @@ function HomePage() {
       <div className="mx-auto w-full max-w-2xl">
         {/* Cinematic cover */}
         <section className="relative overflow-hidden">
-          <div className="relative h-[min(72vh,680px)] w-full bg-black">
+ mar          <div className="relative h-[min(72vh,680px)] w-full bg-black">
             <picture>
               <source media="(min-width: 640px)" srcSet="/covers/hero-wide.jpg" />
               <img
@@ -58,7 +58,7 @@ function HomePage() {
                   "linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.02) 36%, rgba(0,0,0,0.45) 70%, #000 100%)",
               }}
               aria-hidden
-            />
+            /> mar
             <div className="absolute inset-x-0 bottom-0 px-5 pb-7 pt-24 sm:px-7">
               <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/80">
                 Dan Brulé · Spiritual Breathing
@@ -91,7 +91,6 @@ function HomePage() {
         </section>
 
         <div className="px-4 sm:px-6">
-          {/* Big unmissable download card */}
           <section className="gradient-edge mt-4 mb-4 overflow-hidden rounded-3xl bg-black p-5 sm:p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
               Free offline app
@@ -109,8 +108,7 @@ function HomePage() {
 
           <InstallPrompt className="mb-4" />
 
-          {/* Stats strip */}
-          <section className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
+          <section className="mt-4 grid grid-cols-3 gap-2 sm:gap-3 mar">
             {[
               { label: "Streak", value: `${streak}d`, icon: Flame, color: "#d4b483" },
               {
@@ -120,16 +118,16 @@ function HomePage() {
                 color: "#7eb8ae",
               },
               {
-                label: mar"Lifetime",
+                label: "Lifetime",
                 value: formatMinutes(totalBreathSeconds || 0).replace(" min", "m"),
                 icon: Heart,
                 color: "#c98990",
               },
             ].map(({ label, value, icon: Icon, color }) => (
               <Card key={label} className="gradient-edge border-0 bg-black">
-                <CardContent className="flex flex-col items-center gap-1 p-3 sm:p-4">
+                <CardContent className="flex flex-col items-center gap-1 p-3 sm:p-4"> mar
                   <Icon className="size-4" style={{ color }} />
- mar                  <p className="font-display text-xl font-medium tabular-nums text-fg sm:text-2xl">
+                  <p className="font-display text-xl font-medium tabular-nums text-fg sm:text-2xl">
                     {value}
                   </p>
                   <p className="text-[10px] uppercase tracking-wider text-subtle">{label}</p>
@@ -138,7 +136,6 @@ function HomePage() {
             ))}
           </section>
 
-          {/* Quick start mar*/}
           <section className="mt-8">
             <div className="mb-3 flex items-end justify-between gap-2">
               <h2 className="font-display text-xl font-medium">Quick start</h2>
@@ -153,7 +150,6 @@ function HomePage() {
             </div>
           </section>
 
-          {/* Journey teaser */}
           <section className="mt-8">
             <h2 className="mb-3 font-display text-xl font-medium">
               7 Essentials journey
@@ -166,7 +162,7 @@ function HomePage() {
                 <div
                   className="flex size-12 shrink-0 items-center justify-center rounded-xl font-display text-lg font-medium"
                   style={{
-                    background: `color-mix(in oklab, ${nextModule.color} 22%, transparent)`,
+                    background: `color-mix(in oklab, ${nextModule.color} mar22%, transparent)`,
                     color: nextModule.color,
                   }}
                 >
@@ -191,7 +187,6 @@ function HomePage() {
             </Link>
           </section>
 
-          {/* Featured technique */}
           <section className="mt-8 mb-4">
             <h2 className="mb-3 font-display text-xl font-medium">Featured</h2>
             <TechniqueCard technique={featured} featured />
@@ -201,7 +196,7 @@ function HomePage() {
             Educational practice inspired by Dan Brulé's Spiritual Breathing teachings.
             Not a medical device. Breathe gently; stop if dizzy.
           </p>
- mar        </div>
+        </div>
       </div>
     </AppShell>
   );
