@@ -40,11 +40,29 @@ export function BreathOrb({
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Interpolate scale by progress for smooth JS-driven animation (reliable across HMR)
-  const scale = scales.from + (scales.to - scales.from) * Math.min(1, Math.max(0, progress));
+  // Continuous keyframe animation over the full phase duration so the orb
+  // visibly swells and shrinks even during long inhales/exhales.
+  const dur = Math.max(0.4, durationSec);
+  const animName = `orb-${phase}`;
+  const animStyle = running && !reduced
+    ? `${animName} ${dur}s linear forwards`
+    : "none";
 
   return (
     <div className="relative mx-auto flex aspect-square w-full max-w-[min(320px,78vw)] items-center justify-center">
+      {/* Ocean-wave bed: swells with the orb, fades on the exhale */}
+      <div
+        className={cn(
+          "absolute inset-[-6%] rounded-full orb-wave-bed pointer-events-none",
+          !running && "opacity-30",
+        )}
+        style={{
+          background: `radial-gradient(ellipse 70% 55% at 50% 60%, color-mix(in oklab, ${color} 22%, transparent), transparent 70%)`,
+          animation: running && !reduced ? `wave-bed ${dur}s ease-in-out infinite` : "none",
+          opacity: phase === "exhale" || phase === "pause" ? 0.35 : 0.7,
+        }}
+      />
+
       {/* Outer glow rings */}
       <div
         className={cn("absolute inset-[8%] rounded-full orb-ring", !running && "opacity-40")}
@@ -65,10 +83,9 @@ export function BreathOrb({
       <div
         className="orb-core relative z-10 flex size-[58%] items-center justify-center rounded-full will-change-transform"
         style={{
-          transform: `scale(${reduced ? 0.9 : scale})`,
-          transition: running
-            ? `transform ${Math.max(0.05, durationSec * 0.08)}s linear`
-            : "transform 0.4s ease",
+          ["--orb-from" as string]: scales.from,
+          ["--orb-to" as string]: scales.to,
+          animation: animStyle,
           background: `radial-gradient(circle at 35% 30%, color-mix(in oklab, ${color} 55%, white), color-mix(in oklab, ${color} 35%, #0c1019) 55%, #0a0e18)`,
           boxShadow: `
             0 0 40px color-mix(in oklab, ${color} 45%, transparent),
