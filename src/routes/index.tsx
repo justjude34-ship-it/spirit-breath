@@ -39,9 +39,8 @@ function HomePage() {
   return (
     <AppShell>
       <div className="mx-auto w-full max-w-2xl">
-        {/* Cinematic cover */}
-        <section className="relative overflow-hidden">
- mar          <div className="relative h-[min(72vh,680px)] w-full bg-black">
+ mar        <section className="relative overflow-hidden">
+          <div className="relative h-[min(72vh,680px)] w-full bg-black">
             <picture>
               <source media="(min-width: 640px)" srcSet="/covers/hero-wide.jpg" />
               <img
@@ -58,7 +57,7 @@ function HomePage() {
                   "linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.02) 36%, rgba(0,0,0,0.45) 70%, #000 100%)",
               }}
               aria-hidden
-            /> mar
+            />
             <div className="absolute inset-x-0 bottom-0 px-5 pb-7 pt-24 sm:px-7">
               <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/80">
                 Dan Brulé · Spiritual Breathing
@@ -99,24 +98,15 @@ function HomePage() {
             <p className="mt-1.5 text-sm text-muted">
               One tap saves a full offline copy you can open anytime — no install required.
             </p>
-            <DownloadButton
-              size="xl"
-              label="Download app now"
-              className="mt-4 w-full"
-            />
+            <DownloadButton size="xl" label="Download app now" className="mt-4 w-full" />
           </section>
 
           <InstallPrompt className="mb-4" />
 
-          <section className="mt-4 grid grid-cols-3 gap-2 sm:gap-3 mar">
+          <section className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
             {[
               { label: "Streak", value: `${streak}d`, icon: Flame, color: "#d4b483" },
-              {
-                label: "Today",
-                value: String(sessionsToday),
-                icon: Sparkles,
-                color: "#7eb8ae",
-              },
+              { label: "Today", value: String(sessionsToday), icon: Sparkles, color: "#7eb8ae" },
               {
                 label: "Lifetime",
                 value: formatMinutes(totalBreathSeconds || 0).replace(" min", "m"),
@@ -125,11 +115,9 @@ function HomePage() {
               },
             ].map(({ label, value, icon: Icon, color }) => (
               <Card key={label} className="gradient-edge border-0 bg-black">
-                <CardContent className="flex flex-col items-center gap-1 p-3 sm:p-4"> mar
+                <CardContent className="flex flex-col items-center gap-1 p-3 sm:p-4">
                   <Icon className="size-4" style={{ color }} />
-                  <p className="font-display text-xl font-medium tabular-nums text-fg sm:text-2xl">
-                    {value}
-                  </p>
+                  <p className="font-display text-xl font-medium tabular-nums text-fg sm:text-2xl">{value}</p>
                   <p className="text-[10px] uppercase tracking-wider text-subtle">{label}</p>
                 </CardContent>
               </Card>
@@ -139,9 +127,7 @@ function HomePage() {
           <section className="mt-8">
             <div className="mb-3 flex items-end justify-between gap-2">
               <h2 className="font-display text-xl font-medium">Quick start</h2>
-              <Link to="/practice" className="text-xs font-medium text-primary hover:underline">
-                See all
-              </Link>
+              <Link to="/practice" className="text-xs font-medium text-primary hover:underline">See all</Link>
             </div>
             <div className="flex flex-wrap gap-2">
               {quick.map((t) => (
@@ -151,18 +137,13 @@ function HomePage() {
           </section>
 
           <section className="mt-8">
-            <h2 className="mb-3 font-display text-xl font-medium">
-              7 Essentials journey
-            </h2>
-            <Link
-              to="/journey"
-              className="gradient-edge block overflow-hidden rounded-2xl border border-transparent bg-black p-5 transition-opacity hover:opacity-95"
-            >
+            <h2 className="mb-3 font-display text-xl font-medium">7 Essentials journey</h2>
+            <Link to="/journey" className="gradient-edge block overflow-hidden rounded-2xl border border-transparent bg-black p-5 transition-opacity hover:opacity-95">
               <div className="flex items-start gap-4">
                 <div
                   className="flex size-12 shrink-0 items-center justify-center rounded-xl font-display text-lg font-medium"
                   style={{
-                    background: `color-mix(in oklab, ${nextModule.color} mar22%, transparent)`,
+                    background: `color-mix(in oklab, ${nextModule.color} 22%, transparent)`,
                     color: nextModule.color,
                   }}
                 >
@@ -170,14 +151,10 @@ function HomePage() {
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-xs uppercase tracking-widest text-subtle">
-                    {completedModules.length >= 7
-                      ? "Complete — revisit anytime"
-                      : `Module ${nextModule.number} of 7`}
+                    {completedModules.length >= 7 ? "Complete — revisit anytime" : `Module ${nextModule.number} of 7`}
                   </p>
                   <h3 className="mt-0.5 font-display text-lg">{nextModule.title}</h3>
-                  <p className="mt-1 text-sm text-muted line-clamp-2">
-                    {nextModule.description}
-                  </p>
+                  <p className="mt-1 text-sm text-muted line-clamp-2">{nextModule.description}</p>
                   <p className="mt-3 text-xs font-medium text-primary">
                     Continue journey
                     <ArrowRight className="ml-1 inline size-3.5" />
