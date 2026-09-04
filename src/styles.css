@@ -2,38 +2,43 @@
 @import "tw-animate-css";
 
 @theme {
-  /* Pure black theme */
+  /* Quiet black canvas */
   --color-bg: #000000;
   --color-bg-elevated: #000000;
-  --color-surface: #050505;
-  --color-surface-2: #0d0d0d;
-  --color-fg: #ffffff;
-  --color-muted: #a1a1aa;
-  --color-subtle: #63636b;
-  --color-border: #1c1c1c;
-  --color-border-strong: #2e2e2e;
+  --color-surface: #0a0a0a;
+  --color-surface-2: #141414;
+  --color-fg: #f3ece3;
+  --color-muted: #a39a90;
+  --color-subtle: #6e675f;
+  --color-border: #22201c;
+  --color-border-strong: #322f2a;
 
-  --color-primary: #5eead4;
-  --color-primary-fg: #042f2e;
-  --color-primary-soft: #2dd4bf33;
+  --color-cream: #f3ece3;
+  --color-champagne: #d4b483;
+  --color-champagne-fg: #1a140c;
 
-  --color-accent: #fb923c;
-  --color-accent-fg: #1c0a00;
-  --color-accent-soft: #fb923c33;
+  --color-primary: #c9b08a;
+  --color-primary-fg: #1a140c;
+  --color-primary-soft: #d4b48333;
 
-  --color-rose: #fb7185;
-  --color-sky: #38bdf8;
-  --color-gold: #fbbf24;
-  --color-violet-soft: #a78bfa;
+  --color-accent: #d4b483;
+  --color-accent-fg: #1a140c;
+  --color-accent-soft: #d4b48333;
 
-  --color-inhale: #2dd4bf;
-  --color-hold: #fbbf24;
-  --color-exhale: #fb7185;
-  --color-pause: #38bdf8;
-  --color-rest: #94a3b8;
+  --color-rose: #c98990;
+  --color-sky: #7aa8b8;
+  --color-gold: #d4b483;
+  --color-violet-soft: #9a8bb0;
 
-  --color-success: #34d399;
-  --color-danger: #f87171;
+  /* Phase colors stay — they only appear on the orb */
+  --color-inhale: #7eb8ae;
+  --color-hold: #d4b483;
+  --color-exhale: #c98990;
+  --color-pause: #7aa8b8;
+  --color-rest: #8a8580;
+
+  --color-success: #7eaa96;
+  --color-danger: #c98990;
 
   --font-display: "Fraunces", "Georgia", serif;
   --font-sans: "Outfit", system-ui, sans-serif;
@@ -47,8 +52,8 @@
   --radius-2xl: 2rem;
   --radius-full: 9999px;
 
-  --shadow-glow-teal: 0 0 40px #2dd4bf40;
-  --shadow-glow-rose: 0 0 40px #fb718540;
+  --shadow-glow-teal: 0 0 28px #7eb8ae28;
+  --shadow-glow-rose: 0 0 28px #c9899028;
   --shadow-card: 0 8px 32px #000000aa;
 }
 
@@ -73,7 +78,7 @@
     line-height: 1.5;
   }
 
-  /* Rainbow gradient headings on black */
+  /* Solid cream headings — no rainbow clip */
   h1,
   h2,
   h3,
@@ -82,22 +87,10 @@
     text-wrap: balance;
     line-height: 1.15;
     letter-spacing: -0.02em;
-    background-image: linear-gradient(
-      100deg,
-      #ff2d95 0%,
-      #ff8a00 18%,
-      #ffd400 36%,
-      #00e676 54%,
-      #00c2ff 72%,
-      #b14dff 90%,
-      #ff2d95 100%
-    );
-    background-size: 220% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    animation: gradient-flow 9s linear infinite;
+    color: var(--color-cream);
+    background: none;
+    -webkit-text-fill-color: unset;
+    animation: none;
   }
 
   p {
@@ -110,12 +103,12 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid var(--color-champagne);
     outline-offset: 2px;
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--color-primary) 40%, transparent);
+    background: color-mix(in oklab, var(--color-champagne) 35%, transparent);
     color: var(--color-fg);
   }
 }
@@ -141,185 +134,81 @@
   }
 }
 
-/* Shared vivid rainbow gradient */
+/* Kept as a class name so old markup does not break — now a quiet gold wash */
 .rainbow-grad {
-  background-image: linear-gradient(
-    120deg,
-    #ff2d95,
-    #ff8a00,
-    #ffd400,
-    #00e676,
-    #00c2ff,
-    #b14dff,
-    #ff2d95
-  );
-  background-size: 300% 300%;
-  animation: gradient-shift 8s ease infinite;
+  background: var(--color-champagne);
+  animation: none;
 }
 
-/* Thick gradient edges on black cards */
+/* Quiet 1px hairline instead of animated rainbow borders */
 .gradient-edge,
 .rainbow-edge {
   position: relative;
   isolation: isolate;
-  border-color: transparent !important;
-  background-color: #000000;
+  border-color: var(--color-border-strong) !important;
+  background-color: #0a0a0a;
 }
 
 .gradient-edge::before,
 .rainbow-edge::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 2.5px;
-  background: linear-gradient(
-    135deg,
-    #ff2d95,
-    #ff8a00,
-    #ffd400,
-    #00e676,
-    #00c2ff,
-    #b14dff,
-    #ff2d95
-  );
-  background-size: 300% 300%;
-  animation: gradient-shift 8s ease infinite;
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none !important;
-  z-index: 0;
+  content: none;
 }
 
-/* Pure black shell + soft color glows */
+/* Pure black shell — one faint warm wash only */
 .app-shell {
   position: relative;
   min-height: calc(100dvh - var(--grok-banner-h, 0px));
   background:
-    radial-gradient(ellipse 100% 50% at 50% -10%, #ff2d9518, transparent 55%),
-    radial-gradient(ellipse 60% 40% at 100% 20%, #00c2ff14, transparent 50%),
-    radial-gradient(ellipse 50% 35% at 0% 80%, #00e67612, transparent 50%),
-    radial-gradient(ellipse 45% 30% at 90% 100%, #b14dff12, transparent 45%),
+    radial-gradient(ellipse 80% 40% at 50% -8%, #d4b48312, transparent 55%),
     #000000;
 }
 
-/* Thick fixed gradient frame */
+/* No rainbow frame */
 .app-frame {
-  pointer-events: none !important;
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  padding: 4px;
-  background: linear-gradient(
-    135deg,
-    #ff2d95,
-    #ff8a00,
-    #ffd400,
-    #00e676,
-    #00c2ff,
-    #b14dff,
-    #ff2d95
-  );
-  background-size: 300% 300%;
-  animation: gradient-shift 10s ease infinite;
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  display: none;
 }
 
-/* Sticky download strip — dark black with rainbow bottom edge */
+/* Sticky download strip — quiet hairline */
 .download-strip {
   background: #000000ee;
-  border-bottom: 2px solid transparent;
-  border-image: linear-gradient(
-      90deg,
-      #ff2d95,
-      #ff8a00,
-      #ffd400,
-      #00e676,
-      #00c2ff,
-      #b14dff
-    )
-    1;
+  border-bottom: 1px solid var(--color-border);
   backdrop-filter: blur(12px);
 }
 
-/* SOLID rainbow download button — impossible to miss on black */
+/* Solid champagne download button */
 .download-btn-solid {
   position: relative;
   border: none;
-  color: #0a0a0a !important;
-  background-image: linear-gradient(
-    105deg,
-    #ff2d95,
-    #ff8a00,
-    #ffd400,
-    #00e676,
-    #00c2ff,
-    #b14dff
-  );
-  background-size: 200% auto;
-  animation: gradient-flow 5s linear infinite;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.15) inset,
-    0 4px 20px #ff2d9544,
-    0 2px 10px #00c2ff33;
+  color: var(--color-champagne-fg) !important;
+  background: var(--color-champagne);
+  box-shadow: 0 4px 16px #d4b48322;
+  animation: none;
 }
 
 .download-btn-solid:hover {
-  filter: brightness(1.08) saturate(1.1);
+  filter: brightness(1.06);
 }
 
 .download-btn-solid:disabled {
   cursor: wait;
 }
 
-/* Bottom nav rainbow top edge */
+/* Bottom nav — thin warm hairline */
 .nav-gradient {
   position: relative;
-  border-top: none !important;
+  border-top: 1px solid var(--color-border) !important;
 }
 
 .nav-gradient::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    #ff2d95,
-    #ff8a00,
-    #ffd400,
-    #00e676,
-    #00c2ff,
-    #b14dff,
-    #ff2d95
-  );
-  background-size: 200% 100%;
-  animation: gradient-shift 7s linear infinite;
-  z-index: 1;
-  pointer-events: none;
+  content: none;
 }
 
-/* Cards sit on pure black */
+/* Cards sit on quiet black */
 .bg-surface {
-  background-color: #050505 !important;
+  background-color: #0a0a0a !important;
 }
 .bg-surface-2 {
-  background-color: #0d0d0d !important;
+  background-color: #141414 !important;
 }
 .bg-bg-elevated {
   background-color: #000000 !important;

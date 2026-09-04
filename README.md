@@ -2,7 +2,7 @@
 
 Interactive Spiritual Breathing practice inspired by the teachings of Dan Brulé.
 
-Black theme with rainbow energy — guided techniques, the 7 Essentials journey, and an offline downloadable app.
+Quiet black theme with warm cream type and a champagne accent. Colour lives in the breath orb during a session, not in the chrome.
 
 ## Practice
 
