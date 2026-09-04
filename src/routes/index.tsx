@@ -39,7 +39,7 @@ function HomePage() {
   return (
     <AppShell>
       <div className="mx-auto w-full max-w-2xl">
- mar        <section className="relative overflow-hidden">
+        <section className="relative overflow-hidden">
           <div className="relative h-[min(72vh,680px)] w-full bg-black">
             <picture>
               <source media="(min-width: 640px)" srcSet="/covers/hero-wide.jpg" />
@@ -67,7 +67,7 @@ function HomePage() {
               </h1>
               <p className="mt-2 max-w-md text-sm text-white/75 sm:text-base">
                 Breathe yourself awake — awareness, energy, heart, and presence.
-              </p>
+ mar              </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Button asChild size="lg">
                   <Link
@@ -136,7 +136,7 @@ function HomePage() {
             </div>
           </section>
 
-          <section className="mt-8">
+          <section className="mt-8"> mar
             <h2 className="mb-3 font-display text-xl font-medium">7 Essentials journey</h2>
             <Link to="/journey" className="gradient-edge block overflow-hidden rounded-2xl border border-transparent bg-black p-5 transition-opacity hover:opacity-95">
               <div className="flex items-start gap-4">
@@ -147,7 +147,7 @@ function HomePage() {
                     color: nextModule.color,
                   }}
                 >
-                  {nextModule.number}
+ mar                  {nextModule.number}
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-xs uppercase tracking-widest text-subtle">
