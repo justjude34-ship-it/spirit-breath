@@ -48,6 +48,10 @@ function HomePage() {
                 src="/covers/hero-portrait.jpg"
                 alt="Spiritual Breathing — luminous breath on black"
                 className="absolute inset-0 size-full object-cover object-[center_18%] sm:object-[center_30%]"
+                style={{
+                  filter:
+                    "saturate(0.42) sepia(0.18) brightness(0.92) contrast(1.04)",
+                }}
                 fetchPriority="high"
               />
             </picture>
