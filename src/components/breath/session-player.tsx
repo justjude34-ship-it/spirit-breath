@@ -58,13 +58,18 @@ export function SessionPlayer({
   const setSoundEnabled = useBreathStore((s) => s.setSoundEnabled);
   const addSession = useBreathStore((s) => s.addSession);
   const completeModule = useBreathStore((s) => s.completeModule);
+  const skipIntro = useBreathStore((s) => s.skipIntro);
+  const setSkipIntro = useBreathStore((s) => s.setSkipIntro);
+
+  const autoStart = skipIntro || technique.id === "breath-awareness";
 
   const [index, setIndex] = useState(0);
   const [phaseElapsed, setPhaseElapsed] = useState(0);
-  const [running, setRunning] = useState(false);
+  const [running, setRunning] = useState(autoStart);
   const [done, setDone] = useState(false);
   const [elapsedTotal, setElapsedTotal] = useState(0);
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(!autoStart);
+  const startedRef = useRef(false);
 
   const step = timeline[index] ?? timeline[0];
   const rafRef = useRef<number | null>(null);
@@ -129,20 +134,31 @@ export function SessionPlayer({
   }, [running, done, step, timeline, finish, soundEnabled]);
 
   useEffect(() => {
+    const nextAuto = skipIntro || technique.id === "breath-awareness";
     setIndex(0);
     setPhaseElapsed(0);
-    setRunning(false);
+    setRunning(nextAuto);
     setDone(false);
     setElapsedTotal(0);
-    setShowIntro(true);
+    setShowIntro(!nextAuto);
     savedRef.current = false;
-  }, [technique.id]);
+    startedRef.current = false;
+    lastTs.current = null;
+  }, [technique.id, skipIntro]);
+
+  useEffect(() => {
+    if (running && !startedRef.current && step) {
+      startedRef.current = true;
+      playPhaseTone(step.phase, soundEnabled);
+    }
+  }, [running, step, soundEnabled]);
 
   const progress = step ? Math.min(1, phaseElapsed / step.durationSec) : 0;
   const countdown = step ? Math.max(0, step.durationSec - phaseElapsed) : 0;
   const overallPct = Math.min(100, (elapsedTotal / totalSec) * 100);
 
   const start = () => {
+    setSkipIntro(true);
     setShowIntro(false);
     setRunning(true);
     if (step) playPhaseTone(step.phase, soundEnabled);
@@ -151,11 +167,13 @@ export function SessionPlayer({
   const reset = () => {
     setIndex(0);
     setPhaseElapsed(0);
-    setRunning(false);
+    setRunning(true);
     setDone(false);
     setElapsedTotal(0);
-    setShowIntro(true);
+    setShowIntro(false);
     savedRef.current = false;
+    startedRef.current = false;
+    lastTs.current = null;
   };
 
   if (done) {
@@ -279,13 +297,12 @@ export function SessionPlayer({
         <Button
           variant="ghost"
           size="icon-sm"
-          onClick={() => {
-            setRunning(false);
-            setShowIntro(true);
-          }}
+          asChild
           aria-label="Exit session"
         >
-          <X className="size-4" />
+          <Link to="/practice">
+            <X className="size-4" />
+          </Link>
         </Button>
         <div className="min-w-0 flex-1 text-center">
           <p className="truncate text-sm font-medium text-fg">{technique.name}</p>
