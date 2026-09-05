@@ -39,27 +39,52 @@ function HomePage() {
               backgroundColor: "#000",
               backgroundImage: "url(/covers/harbour-blue.jpg)",
               backgroundSize: "cover",
-              backgroundPosition: "center 55%",
+              backgroundPosition: "center 38%",
             }}
           >
             <img
               src="/covers/harbour-blue.jpg"
-              alt="Pretty sunrise harbour — blue sky, blue water, little boats"
-              className="pointer-events-none absolute inset-0 z-0 size-full object-cover object-[center_55%]"
+              alt="Spirit Breath — pretty blue harbour with little boats"
+              className="pointer-events-none absolute inset-0 z-0 size-full object-cover object-[center_38%]"
               fetchPriority="high"
             />
             <div
               className="pointer-events-none absolute inset-0 z-10"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(8,24,48,0.08) 0%, rgba(8,24,48,0) 38%, rgba(8,24,48,0.22) 72%, rgba(8,20,40,0.52) 100%)",
+                  "linear-gradient(180deg, rgba(6,18,40,0.55) 0%, rgba(6,18,40,0.18) 28%, rgba(6,18,40,0.02) 46%, rgba(6,16,36,0.28) 74%, rgba(6,14,32,0.66) 100%)",
               }}
               aria-hidden
             />
-            <div className="absolute inset-x-0 bottom-0 z-20 px-5 pb-7 pt-24 sm:px-7">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/90" style={{ textShadow: "0 1px 12px rgba(8,20,40,0.45)" }}>Dan Brulé · Spiritual Breathing</p>
-              <h1 className="mt-1.5 font-display text-4xl font-medium leading-[1.05] text-cream sm:text-5xl" style={{ textShadow: "0 2px 18px rgba(8,20,40,0.5)" }}>Spirit Breath</h1>
-              <p className="mt-2 max-w-md text-sm text-white/90 sm:text-base" style={{ textShadow: "0 1px 12px rgba(8,20,40,0.45)" }}>Breathe yourself awake — awareness, energy, heart, and presence.</p>
+            <div className="absolute inset-x-0 top-0 z-20 px-5 pt-7 text-center sm:px-7 sm:pt-9">
+              <p
+                className="text-[11px] font-semibold uppercase tracking-[0.32em] text-white"
+                style={{ textShadow: "0 2px 18px rgba(6,16,36,0.85)" }}
+              >
+                Dan Brulé · Spiritual Breathing
+              </p>
+              <h1
+                className="mt-2 font-display text-5xl font-medium leading-[1.02] text-cream sm:text-6xl"
+                style={{
+                  textShadow:
+                    "0 6px 32px rgba(6,16,36,0.9), 0 2px 8px rgba(6,16,36,0.7), 0 1px 0 rgba(0,0,0,0.4)",
+                }}
+              >
+                Spirit Breath
+              </h1>
+              <div
+                className="mx-auto mt-3 h-px w-24"
+                style={{ background: "linear-gradient(90deg, transparent, #d4b483, transparent)" }}
+                aria-hidden
+              />
+            </div>
+            <div className="absolute inset-x-0 bottom-0 z-20 px-5 pb-7 pt-20 sm:px-7">
+              <p
+                className="max-w-md text-sm text-white/92 sm:text-base"
+                style={{ textShadow: "0 2px 14px rgba(6,16,36,0.7)" }}
+              >
+                Breathe yourself awake — awareness, energy, heart, and presence.
+              </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Button asChild size="lg">
                   <Link to="/practice/$techniqueId" params={{ techniqueId: "spiritual-breathing" }}>
@@ -67,7 +92,9 @@ function HomePage() {
                   </Link>
                 </Button>
                 <Button asChild variant="secondary" size="lg">
-                  <Link to="/practice">Browse techniques <ArrowRight className="size-4" /></Link>
+                  <Link to="/practice">
+                    Browse techniques <ArrowRight className="size-4" />
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -75,9 +102,13 @@ function HomePage() {
         </section>
         <div className="px-4 sm:px-6">
           <section className="gradient-edge mt-4 mb-4 overflow-hidden rounded-3xl bg-black p-5 sm:p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Free offline app</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+              Free offline app
+            </p>
             <h2 className="mt-1 font-display text-2xl font-medium">Download Spirit Breath</h2>
-            <p className="mt-1.5 text-sm text-muted">One tap saves a full offline copy you can open anytime — no install required.</p>
+            <p className="mt-1.5 text-sm text-muted">
+              One tap saves a full offline copy you can open anytime — no install required.
+            </p>
             <DownloadButton size="xl" label="Download app now" className="mt-4 w-full" />
           </section>
           <InstallPrompt className="mb-4" />
@@ -85,12 +116,19 @@ function HomePage() {
             {[
               { label: "Streak", value: `${streak}d`, icon: Flame, color: "#d4b483" },
               { label: "Today", value: String(sessionsToday), icon: Sparkles, color: "#7eb8ae" },
-              { label: "Lifetime", value: formatMinutes(totalBreathSeconds || 0).replace(" min", "m"), icon: Heart, color: "#c98990" },
+              {
+                label: "Lifetime",
+                value: formatMinutes(totalBreathSeconds || 0).replace(" min", "m"),
+                icon: Heart,
+                color: "#c98990",
+              },
             ].map(({ label, value, icon: Icon, color }) => (
               <Card key={label} className="gradient-edge border-0 bg-black">
                 <CardContent className="flex flex-col items-center gap-1 p-3 sm:p-4">
                   <Icon className="size-4" style={{ color }} />
-                  <p className="font-display text-xl font-medium tabular-nums text-fg sm:text-2xl">{value}</p>
+                  <p className="font-display text-xl font-medium tabular-nums text-fg sm:text-2xl">
+                    {value}
+                  </p>
                   <p className="text-[10px] uppercase tracking-wider text-subtle">{label}</p>
                 </CardContent>
               </Card>
@@ -99,7 +137,9 @@ function HomePage() {
           <section className="mt-8">
             <div className="mb-3 flex items-end justify-between gap-2">
               <h2 className="font-display text-xl font-medium">Quick start</h2>
-              <Link to="/practice" className="text-xs font-medium text-primary hover:underline">See all</Link>
+              <Link to="/practice" className="text-xs font-medium text-primary hover:underline">
+                See all
+              </Link>
             </div>
             <div className="flex flex-wrap gap-2">
               {quick.map((t) => (
@@ -109,14 +149,31 @@ function HomePage() {
           </section>
           <section className="mt-8">
             <h2 className="mb-3 font-display text-xl font-medium">7 Essentials journey</h2>
-            <Link to="/journey" className="gradient-edge block overflow-hidden rounded-2xl border border-transparent bg-black p-5 transition-opacity hover:opacity-95">
+            <Link
+              to="/journey"
+              className="gradient-edge block overflow-hidden rounded-2xl border border-transparent bg-black p-5 transition-opacity hover:opacity-95"
+            >
               <div className="flex items-start gap-4">
-                <div className="flex size-12 shrink-0 items-center justify-center rounded-xl font-display text-lg font-medium" style={{ background: `color-mix(in oklab, ${nextModule.color} 22%, transparent)`, color: nextModule.color }}>{nextModule.number}</div>
+                <div
+                  className="flex size-12 shrink-0 items-center justify-center rounded-xl font-display text-lg font-medium"
+                  style={{
+                    background: `color-mix(in oklab, ${nextModule.color} 22%, transparent)`,
+                    color: nextModule.color,
+                  }}
+                >
+                  {nextModule.number}
+                </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs uppercase tracking-widest text-subtle">{completedModules.length >= 7 ? "Complete — revisit anytime" : `Module ${nextModule.number} of 7`}</p>
+                  <p className="text-xs uppercase tracking-widest text-subtle">
+                    {completedModules.length >= 7
+                      ? "Complete — revisit anytime"
+                      : `Module ${nextModule.number} of 7`}
+                  </p>
                   <h3 className="mt-0.5 font-display text-lg">{nextModule.title}</h3>
                   <p className="mt-1 text-sm text-muted line-clamp-2">{nextModule.description}</p>
-                  <p className="mt-3 text-xs font-medium text-primary">Continue journey <ArrowRight className="ml-1 inline size-3.5" /></p>
+                  <p className="mt-3 text-xs font-medium text-primary">
+                    Continue journey <ArrowRight className="ml-1 inline size-3.5" />
+                  </p>
                 </div>
               </div>
             </Link>
@@ -125,7 +182,10 @@ function HomePage() {
             <h2 className="mb-3 font-display text-xl font-medium">Featured</h2>
             <TechniqueCard technique={featured} featured />
           </section>
-          <p className="mb-6 text-center text-[11px] leading-relaxed text-subtle">Educational practice inspired by Dan Brulé's Spiritual Breathing teachings. Not a medical device. Breathe gently; stop if dizzy.</p>
+          <p className="mb-6 text-center text-[11px] leading-relaxed text-subtle">
+            Educational practice inspired by Dan Brulé's Spiritual Breathing teachings. Not a
+            medical device. Breathe gently; stop if dizzy.
+          </p>
         </div>
       </div>
     </AppShell>
