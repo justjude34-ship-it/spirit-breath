@@ -37,13 +37,13 @@ function HomePage() {
             className="relative h-[min(78vh,760px)] w-full overflow-hidden bg-black"
             style={{
               backgroundColor: "#000",
-              backgroundImage: "url(/covers/app-cover.jpg)",
+              backgroundImage: "url(/covers/harbour-dawn.jpg)",
               backgroundSize: "cover",
               backgroundPosition: "center 52%",
             }}
           >
             <img
-              src="/covers/app-cover.jpg"
+              src="/covers/harbour-dawn.jpg"
               alt="Quiet harbour at sunrise — still water, open sky, wooden jetty"
               className="pointer-events-none absolute inset-0 z-0 size-full object-cover object-[center_52%]"
               fetchPriority="high"
