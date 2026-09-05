@@ -39,20 +39,20 @@ function HomePage() {
               backgroundColor: "#000",
               backgroundImage: "url(/covers/app-cover.jpg)",
               backgroundSize: "cover",
-              backgroundPosition: "center 55%",
+              backgroundPosition: "center 60%",
             }}
           >
             <img
               src="/covers/app-cover.jpg"
-              alt="Modern harbour at dusk — still water, city lights, quiet sky"
-              className="pointer-events-none absolute inset-0 z-0 size-full object-cover object-[center_55%]"
+              alt="Modern harbour at sunrise — still water, yachts, peach dawn sky"
+              className="pointer-events-none absolute inset-0 z-0 size-full object-cover object-[center_60%]"
               fetchPriority="high"
             />
             <div
               className="pointer-events-none absolute inset-0 z-10"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.04) 38%, rgba(0,0,0,0.55) 72%, #000 100%)",
+                  "linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.02) 36%, rgba(0,0,0,0.48) 72%, #000 100%)",
               }}
               aria-hidden
             />
