@@ -37,22 +37,22 @@ function HomePage() {
             className="relative h-[min(78vh,760px)] w-full overflow-hidden bg-black"
             style={{
               backgroundColor: "#000",
-              backgroundImage: "url(/covers/harbour-dawn.jpg)",
+              backgroundImage: "url(/covers/harbour-light.jpg)",
               backgroundSize: "cover",
-              backgroundPosition: "center 52%",
+              backgroundPosition: "center 58%",
             }}
           >
             <img
-              src="/covers/harbour-dawn.jpg"
-              alt="Quiet harbour at sunrise — still water, open sky, wooden jetty"
-              className="pointer-events-none absolute inset-0 z-0 size-full object-cover object-[center_52%]"
+              src="/covers/harbour-light.jpg"
+              alt="Sunrise over open harbour water — gold light, still sea, no city"
+              className="pointer-events-none absolute inset-0 z-0 size-full object-cover object-[center_58%]"
               fetchPriority="high"
             />
             <div
               className="pointer-events-none absolute inset-0 z-10"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.0) 32%, rgba(0,0,0,0.42) 74%, #000 100%)",
+                  "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 48%, rgba(28,16,6,0.28) 78%, rgba(16,10,4,0.62) 100%)",
               }}
               aria-hidden
             />
