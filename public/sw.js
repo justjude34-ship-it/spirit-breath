@@ -1,5 +1,5 @@
 /* Spirit Breath offline shell — network-first for navigations, cache-first for static assets */
-const CACHE = "spirit-breath-v3";
+const CACHE = "spirit-breath-v4";
 const PRECACHE = ["/", "/manifest.webmanifest", "/icons/icon-192.png", "/icons/icon-512.png", "/icons/icon.svg"];
 
 self.addEventListener("install", (event) => {
