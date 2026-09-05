@@ -37,29 +37,29 @@ function HomePage() {
             className="relative h-[min(78vh,760px)] w-full overflow-hidden bg-black"
             style={{
               backgroundColor: "#000",
-              backgroundImage: "url(/covers/harbour-light.jpg)",
+              backgroundImage: "url(/covers/harbour-blue.jpg)",
               backgroundSize: "cover",
-              backgroundPosition: "center 58%",
+              backgroundPosition: "center 55%",
             }}
           >
             <img
-              src="/covers/harbour-light.jpg"
-              alt="Sunrise over open harbour water — gold light, still sea, no city"
-              className="pointer-events-none absolute inset-0 z-0 size-full object-cover object-[center_58%]"
+              src="/covers/harbour-blue.jpg"
+              alt="Pretty sunrise harbour — blue sky, blue water, little boats"
+              className="pointer-events-none absolute inset-0 z-0 size-full object-cover object-[center_55%]"
               fetchPriority="high"
             />
             <div
               className="pointer-events-none absolute inset-0 z-10"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 48%, rgba(28,16,6,0.28) 78%, rgba(16,10,4,0.62) 100%)",
+                  "linear-gradient(180deg, rgba(8,24,48,0.08) 0%, rgba(8,24,48,0) 38%, rgba(8,24,48,0.22) 72%, rgba(8,20,40,0.52) 100%)",
               }}
               aria-hidden
             />
             <div className="absolute inset-x-0 bottom-0 z-20 px-5 pb-7 pt-24 sm:px-7">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/80">Dan Brulé · Spiritual Breathing</p>
-              <h1 className="mt-1.5 font-display text-4xl font-medium leading-[1.05] text-cream sm:text-5xl">Spirit Breath</h1>
-              <p className="mt-2 max-w-md text-sm text-white/80 sm:text-base">Breathe yourself awake — awareness, energy, heart, and presence.</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/90" style={{ textShadow: "0 1px 12px rgba(8,20,40,0.45)" }}>Dan Brulé · Spiritual Breathing</p>
+              <h1 className="mt-1.5 font-display text-4xl font-medium leading-[1.05] text-cream sm:text-5xl" style={{ textShadow: "0 2px 18px rgba(8,20,40,0.5)" }}>Spirit Breath</h1>
+              <p className="mt-2 max-w-md text-sm text-white/90 sm:text-base" style={{ textShadow: "0 1px 12px rgba(8,20,40,0.45)" }}>Breathe yourself awake — awareness, energy, heart, and presence.</p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Button asChild size="lg">
                   <Link to="/practice/$techniqueId" params={{ techniqueId: "spiritual-breathing" }}>

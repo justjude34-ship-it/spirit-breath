@@ -6,8 +6,8 @@ import appCss from "../styles.css?url";
 const APP_NAME = "Spirit Breath — Dan Brulé";
 const host = import.meta.env.VITE_PUBLIC_HOSTNAME;
 const ogImage = host
-  ? `https://${host}/covers/harbour-light-wide.jpg`
-  : "/covers/harbour-light-wide.jpg";
+  ? `https://${host}/covers/harbour-blue-wide.jpg`
+  : "/covers/harbour-blue-wide.jpg";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -46,7 +46,7 @@ export const Route = createRootRoute({
       { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "icon", href: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
       { rel: "apple-touch-icon", href: "/icons/icon-512.png" },
-      { rel: "preload", as: "image", href: "/covers/harbour-light.jpg" },
+      { rel: "preload", as: "image", href: "/covers/harbour-blue.jpg" },
     ],
   }),
   component: RootDocument,
