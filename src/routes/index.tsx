@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Flame, Heart, Sparkles, Wind } from "lucide-react";
 import { AppShell } from "@/components/breath/app-shell";
 import { MiniTechniqueChip, TechniqueCard } from "@/components/breath/technique-card";
@@ -15,6 +15,7 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
+  const navigate = useNavigate();
   const streak = useBreathStore((s) => s.streak);
   const totalBreathSeconds = useBreathStore((s) => s.totalBreathSeconds);
   const sessionsToday = useBreathStore((s) => s.sessionsToday());
@@ -34,12 +35,14 @@ function HomePage() {
       <div className="mx-auto w-full max-w-2xl">
         <section className="relative overflow-hidden bg-black">
           <div
-            className="relative h-[min(78vh,760px)] w-full overflow-hidden bg-black"
+            className="relative w-full overflow-hidden bg-black"
             style={{
               backgroundColor: "#000",
               backgroundImage: "url(/covers/harbour-blue.jpg)",
               backgroundSize: "cover",
               backgroundPosition: "center 38%",
+              height:
+                "clamp(28rem, calc(100dvh - var(--grok-banner-h, 0px) - 3.5rem - 5.75rem), 46rem)",
             }}
           >
             <img
@@ -78,7 +81,7 @@ function HomePage() {
                 aria-hidden
               />
             </div>
-            <div className="absolute inset-x-0 bottom-0 z-20 px-5 pb-7 pt-20 sm:px-7">
+            <div className="absolute inset-x-0 bottom-0 z-30 px-5 pb-6 pt-20 sm:px-7">
               <p
                 className="max-w-md text-sm text-white/92 sm:text-base"
                 style={{ textShadow: "0 2px 14px rgba(6,16,36,0.7)" }}
@@ -86,15 +89,25 @@ function HomePage() {
                 Breathe yourself awake — awareness, energy, heart, and presence.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
-                <Button asChild size="lg">
-                  <Link to="/practice/$techniqueId" params={{ techniqueId: "spiritual-breathing" }}>
-                    <Wind className="size-5" /> Start guided session
-                  </Link>
+                <Button
+                  type="button"
+                  size="lg"
+                  onClick={() =>
+                    void navigate({
+                      to: "/practice/$techniqueId",
+                      params: { techniqueId: "spiritual-breathing" },
+                    })
+                  }
+                >
+                  <Wind className="size-5" /> Start guided session
                 </Button>
-                <Button asChild variant="secondary" size="lg">
-                  <Link to="/practice">
-                    Browse techniques <ArrowRight className="size-4" />
-                  </Link>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="lg"
+                  onClick={() => void navigate({ to: "/practice" })}
+                >
+                  Browse techniques <ArrowRight className="size-4" />
                 </Button>
               </div>
             </div>
