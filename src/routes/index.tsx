@@ -40,34 +40,36 @@ function HomePage() {
               backgroundColor: "#000",
               backgroundImage: "url(/covers/harbour-blue.jpg)",
               backgroundSize: "cover",
-              backgroundPosition: "center 38%",
+              backgroundPosition: "center 42%",
               height:
-                "clamp(28rem, calc(100dvh - var(--grok-banner-h, 0px) - 3.5rem - 5.75rem), 46rem)",
+                "calc(100dvh - var(--grok-banner-h, 0px) - 3.25rem - 4.75rem - env(safe-area-inset-bottom, 0px))",
+              maxHeight: "46rem",
+              minHeight: "24rem",
             }}
           >
             <img
               src="/covers/harbour-blue.jpg"
               alt="Spirit Breath — pretty blue harbour with little boats"
-              className="pointer-events-none absolute inset-0 z-0 size-full object-cover object-[center_38%]"
+              className="pointer-events-none absolute inset-0 z-0 size-full object-cover object-[center_42%]"
               fetchPriority="high"
             />
             <div
               className="pointer-events-none absolute inset-0 z-10"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(6,18,40,0.55) 0%, rgba(6,18,40,0.18) 28%, rgba(6,18,40,0.02) 46%, rgba(6,16,36,0.28) 74%, rgba(6,14,32,0.66) 100%)",
+                  "linear-gradient(180deg, rgba(6,18,40,0.22) 0%, rgba(6,18,40,0.04) 32%, rgba(6,18,40,0) 48%, rgba(6,16,36,0.2) 74%, rgba(6,14,32,0.55) 100%)",
               }}
               aria-hidden
             />
-            <div className="absolute inset-x-0 top-0 z-20 px-5 pt-7 text-center sm:px-7 sm:pt-9">
+            <div className="absolute inset-x-0 top-0 z-20 px-4 pt-5 text-center sm:px-7 sm:pt-9">
               <p
-                className="text-[11px] font-semibold uppercase tracking-[0.32em] text-white"
+                className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white sm:text-[11px] sm:tracking-[0.32em]"
                 style={{ textShadow: "0 2px 18px rgba(6,16,36,0.85)" }}
               >
                 Dan Brulé · Spiritual Breathing
               </p>
               <h1
-                className="mt-2 font-display text-5xl font-medium leading-[1.02] text-cream sm:text-6xl"
+                className="mt-1.5 font-display text-[2.35rem] font-medium leading-[1.02] text-cream sm:mt-2 sm:text-6xl"
                 style={{
                   textShadow:
                     "0 6px 32px rgba(6,16,36,0.9), 0 2px 8px rgba(6,16,36,0.7), 0 1px 0 rgba(0,0,0,0.4)",
@@ -81,17 +83,18 @@ function HomePage() {
                 aria-hidden
               />
             </div>
-            <div className="absolute inset-x-0 bottom-0 z-30 px-5 pb-6 pt-20 sm:px-7">
+            <div className="absolute inset-x-0 bottom-0 z-30 px-4 pb-4 pt-16 sm:px-7 sm:pb-6">
               <p
-                className="max-w-md text-sm text-white/92 sm:text-base"
+                className="max-w-md text-sm leading-snug text-white/92 sm:text-base"
                 style={{ textShadow: "0 2px 14px rgba(6,16,36,0.7)" }}
               >
                 Breathe yourself awake — awareness, energy, heart, and presence.
               </p>
-              <div className="mt-5 flex flex-wrap gap-3">
+              <div className="mt-3 flex flex-col gap-2.5 sm:mt-5 sm:flex-row sm:flex-wrap">
                 <Button
                   type="button"
                   size="lg"
+                  className="w-full sm:w-auto"
                   onClick={() =>
                     void navigate({
                       to: "/practice/$techniqueId",
@@ -105,6 +108,7 @@ function HomePage() {
                   type="button"
                   variant="secondary"
                   size="lg"
+                  className="w-full sm:w-auto"
                   onClick={() => void navigate({ to: "/practice" })}
                 >
                   Browse techniques <ArrowRight className="size-4" />

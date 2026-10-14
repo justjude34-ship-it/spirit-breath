@@ -67,6 +67,7 @@
     -moz-osx-font-smoothing: grayscale;
     color-scheme: dark;
     background: #000000;
+    overflow-x: clip;
   }
 
   body {

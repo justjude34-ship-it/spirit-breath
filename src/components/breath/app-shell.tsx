@@ -28,13 +28,10 @@ export function AppShell({
       {/* Always-visible top download strip */}
       {!hideNav && (
         <div className="download-strip sticky top-0 z-40">
-          <div className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
-            <div className="min-w-0">
-              <p className="truncate text-xs font-semibold uppercase tracking-[0.14em] text-white/90">
-                Spirit Breath
-              </p>
-              <p className="truncate text-[11px] text-white/55">Offline app · free download</p>
-            </div>
+          <div className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-2 sm:px-6 sm:py-2.5">
+            <p className="min-w-0 truncate text-xs font-semibold uppercase tracking-[0.14em] text-white/90">
+              Spirit Breath
+            </p>
             <DownloadButton size="bar" label="Download" className="shrink-0 shadow-lg" />
           </div>
         </div>
@@ -45,21 +42,20 @@ export function AppShell({
       {!hideNav && (
         <nav
           className="nav-gradient fixed inset-x-0 bottom-0 z-50 border-t border-transparent bg-black/95 backdrop-blur-xl"
-          style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
           aria-label="Main"
         >
-          <ul className="mx-auto flex max-w-lg items-stretch justify-between px-2 pt-1.5 pb-1.5">
+          <ul className="mx-auto flex max-w-lg items-stretch justify-between px-1 pt-1 pb-[max(0.35rem,env(safe-area-inset-bottom,0px))]">
             {nav.map(({ to, label, icon: Icon }) => {
               const active =
                 to === "/"
                   ? pathname === "/"
                   : pathname === to || pathname.startsWith(`${to}/`);
               return (
-                <li key={to} className="flex-1">
+                <li key={to} className="min-w-0 flex-1">
                   <Link
                     to={to}
                     className={cn(
-                      "flex min-h-11 flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1 text-[10px] font-medium tracking-wide transition-colors",
+                      "flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl px-0.5 py-1 text-[11px] font-medium leading-none tracking-wide transition-colors",
                       active ? "text-primary" : "text-subtle hover:text-muted",
                     )}
                   >
@@ -67,7 +63,7 @@ export function AppShell({
                       className={cn("size-5", active && "drop-shadow-[0_0_8px_#5eead488]")}
                       strokeWidth={active ? 2.25 : 1.75}
                     />
-                    {label}
+                    <span className="max-w-full truncate">{label}</span>
                   </Link>
                 </li>
               );
