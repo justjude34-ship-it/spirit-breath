@@ -1,0 +1,27 @@
+name: Update TanStack Start (one-off)
+on:
+  push:
+    branches: [bump-tanstack-start]
+permissions:
+  contents: write
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Update @tanstack/react-start
+        run: npm install @tanstack/react-start@^1.168.60 --ignore-scripts --no-audit --no-fund
+      - name: Check the installed version
+        run: |
+          node -e "const v=require('./node_modules/@tanstack/react-start/package.json').version;console.log('react-start',v);const p=v.split('.').map(Number);if(p[0]!==1||p[1]<168||(p[1]===168&&p[2]<60))process.exit(1)"
+      - name: Commit the update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "Update @tanstack/react-start to fix CVE-2026-102989" || echo "nothing to commit"
+          git push origin HEAD:${{ github.ref_name }}
